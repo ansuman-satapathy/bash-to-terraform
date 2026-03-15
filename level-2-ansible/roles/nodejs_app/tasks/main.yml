@@ -1,0 +1,53 @@
+---
+- name: Install Node.js and Nginx
+  apt:
+    name: [nodejs, nginx]
+    state: present
+    update_cache: yes
+
+- name: Install PM2 globally
+  npm:
+    name: pm2
+    global: yes
+    state: present
+
+- name: Create app directory
+  file:
+    path: /var/www/dummy-node-app
+    state: directory
+    owner: vagrant
+    group: vagrant
+
+- name: Sync application code
+  synchronize:
+    src: ../dummy-node-app/
+    dest: /var/www/dummy-node-app/
+
+- name: Setup Nginx Config
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify: restart nginx
+
+- name: Install npm dependencies
+  npm:
+    path: /var/www/dummy-node-app
+
+- name: Start app with PM2
+  shell: |
+    pm2 delete all || true
+    pm2 start server.js --name "node-app"
+  args:
+    chdir: /var/www/dummy-node-app
+  become: true
+  become_user: vagrant
+  environment:
+    PG_HOST: "192.168.56.10"
+    REDIS_URL: "redis://192.168.56.11:6379"
+    PORT: "3000"
+
+- name: Wait for Port 3000 to open
+  wait_for:
+    host: 127.0.0.1
+    port: 3000
+    timeout: 15

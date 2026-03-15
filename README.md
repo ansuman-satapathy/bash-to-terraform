@@ -4,7 +4,9 @@ This repository demonstrates the evolution of Infrastructure as Code (IaC) and C
 
 ## 🎯 The Goal
 
-To provision the infrastructure for a standard 3-tier web application (Web Server, Cache, and Database) using three entirely different DevOps philosophies.
+To provision the infrastructure for a standard 3-tier web application using three entirely different DevOps philosophies.
+
+A single, custom-built `dummy-node-app` is located at the root of this repository. **This exact same application is deployed across all three levels** to demonstrate how different infrastructure tools handle and scale the exact same workload.
 
 **The Application Stack:**
 
@@ -12,8 +14,6 @@ To provision the infrastructure for a standard 3-tier web application (Web Serve
 - **Cache:** Redis.
 - **Database:** PostgreSQL.
 - **Proxy:** Nginx.
-
----
 
 ## 🚀 The 3 Stages of Evolution
 
