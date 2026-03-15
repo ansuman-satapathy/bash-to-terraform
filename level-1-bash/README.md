@@ -34,4 +34,4 @@ vagrant ssh
 sudo bash /vagrant/bootstrap.sh
 ```
 
-5. View the live application at http://localhost:8080.
+5. View the live application at port 80 of the server IP.
