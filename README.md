@@ -23,11 +23,12 @@ A single, custom-built `dummy-node-app` is located at the root of this repositor
 - **The Tooling:** A procedural Bash `bootstrap.sh` script.
 - **The Lesson:** Demonstrates how to configure OS-level services (systemd, UFW, PM2) and integrate official GPG-secured package repositories. Exposes the fragility and lack of native idempotency inherent in imperative shell scripting.
 
-### Level 2: Configuration Management (Ansible) - _Coming Soon_
+### [Level 2: Configuration Management (Ansible)](./level-2-ansible)
 
-- **The Architecture:** A distributed 3-node environment (Web Server, Redis Server, Postgres Server).
-- **The Tooling:** Ansible Playbooks and Roles.
-- **The Lesson:** Upgrades the infrastructure to a **declarative** state. Demonstrates native idempotency, dynamic variable injection, and modular server configuration without manual SSH execution.
+- **The Architecture:** A distributed 3-node environment consisting of a Web Server (`192.168.56.12`), Redis Server (`192.168.56.11`), and Postgres Server (`192.168.56.10`).
+
+- **The Tooling:** Ansible Playbooks, Roles, and optimized `ansible.cfg` with SSH Pipelining.
+- **The Lesson:** Upgrades the infrastructure to a **declarative** state. Demonstrates native idempotency, modular server configuration, and secure internal communication using a "Default Deny" UFW policy across separate network interfaces.
 
 ### Level 3: Cloud-Native IaC on AWS (Terraform + Ansible) - _Coming Soon_
 
@@ -42,4 +43,5 @@ A single, custom-built `dummy-node-app` is located at the root of this repositor
 To ensure a clean, reproducible setup while managing costs:
 
 - **Levels 1 & 2 (Local Testing):** Utilizes **Vagrant** with the **KVM/libvirt** hypervisor to spin up isolated, cost-free VMs locally.
+
 - **Level 3 (Cloud Deployment):** Targets **Amazon Web Services (AWS)** using standard API credentials to provision real cloud infrastructure.
