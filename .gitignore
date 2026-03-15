@@ -1,0 +1,46 @@
+# ==============================================================================
+# Global / OS
+# ==============================================================================
+.DS_Store
+Thumbs.db
+*.log
+
+# ==============================================================================
+# Level 1 & 2: Vagrant & Node.js
+# ==============================================================================
+# Ignore Vagrant local machine state
+.vagrant/
+
+# Ignore Node.js dependencies (these must be installed inside the VM, not the host)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ==============================================================================
+# Level 2: Ansible
+# ==============================================================================
+*.retry
+.ansible/
+
+# ==============================================================================
+# Level 3: Terraform & AWS
+# ==============================================================================
+# Local Terraform directories
+.terraform/
+
+# Terraform state files (CRITICAL: These can contain AWS secrets in plain text)
+*.tfstate
+*.tfstate.backup
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Ignore Terraform variables files (where you will put your AWS access keys later)
+*.tfvars
+*.tfvars.json
+
+# SSH Keys (NEVER commit private keys to GitHub)
+*.pem
+*.rsa
+id_rsa

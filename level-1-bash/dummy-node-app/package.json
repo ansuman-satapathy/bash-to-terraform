@@ -1,0 +1,14 @@
+{
+  "name": "dummy-node-app-with-pg-and-redis",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.11.3",
+    "redis": "^4.6.13"
+  }
+}
