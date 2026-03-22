@@ -1,0 +1,53 @@
+---
+- name: Update apt repo and cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600  
+
+- name: Install common packages
+  apt:
+    name: [curl, git, vim, ufw, htop, lsb-release, gpg]
+    state: present
+
+- name: Allow SSH
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+
+- name: Allow HTTP traffic
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Allow Internal DB and Redis traffic
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - '5432'
+    - '6379'
+
+- name: Set default firewall policy
+  ufw:
+    state: enabled
+    direction: incoming
+    policy: deny
+
+- name: Generate local locales
+  become: true
+  shell: |
+    locale-gen en_US.UTF-8
+    locale-gen en_IN.UTF-8
+    update-locale
+
+- name: Create Ansible temporary directory with correct permissions
+  file:
+    path: /home/ubuntu/.ansible/tmp
+    state: directory
+    mode: '0755'
+    owner: ubuntu
+    group: ubuntu

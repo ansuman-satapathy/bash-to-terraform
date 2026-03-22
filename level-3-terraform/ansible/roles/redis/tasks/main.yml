@@ -1,0 +1,35 @@
+---
+- name: Add Redis GPG key
+  apt_key:
+    url: https://packages.redis.io/gpg
+    state: present
+
+- name: Add Redis repository
+  apt_repository:
+    repo: "deb https://packages.redis.io/deb {{ ansible_facts['distribution_release'] }} main"
+    state: present
+
+- name: Install Redis
+  apt:
+    name: redis
+    state: present
+
+- name: Allow Redis to listen on all network interfaces
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^bind 127.0.0.1'
+    line: 'bind 0.0.0.0'
+  notify: restart redis
+
+- name: Disable protected mode for lab environment
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^protected-mode yes'
+    line: 'protected-mode no'
+  notify: restart redis
+
+- name: Ensure Redis is started and enabled
+  service:
+    name: redis-server
+    state: started
+    enabled: yes
