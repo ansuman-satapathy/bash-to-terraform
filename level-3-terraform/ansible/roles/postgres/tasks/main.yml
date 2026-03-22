@@ -1,0 +1,62 @@
+---
+- name: Add PostgreSQL official GPG key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Add PostgreSQL repository
+  apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_facts['distribution_release'] }}-pgdg main"
+    state: present
+
+- name: Install PostgreSQL
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2 # Needed so Ansible can talk to Postgres later
+    state: present
+
+- name: Allow Postgres to listen on all interfaces
+  lineinfile:
+    path: /etc/postgresql/18/main/postgresql.conf
+    regexp: "^#?listen_addresses ="
+    line: "listen_addresses = '*'"
+  notify: restart postgres
+
+- name: Allow connections from the private network
+  lineinfile:
+    path: /etc/postgresql/18/main/pg_hba.conf
+    line: "host    all             all             10.0.0.0/16             trust"
+  notify: restart postgres
+
+- name: Ensure PostgreSQL service is started and enabled
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Create the application database
+  community.postgresql.postgresql_db:
+    name: testdb
+    state: present
+  become: true
+  become_user: postgres
+
+- name: Create the application user
+  community.postgresql.postgresql_user:
+    name: postgres
+    password: postgres
+    state: present
+  become: true
+  become_user: postgres
+
+- name: Grant ALL privileges on database testdb to user postgres
+  community.postgresql.postgresql_privs:
+    login_db: postgres      
+    objs: testdb           
+    roles: postgres         
+    type: database
+    privs: ALL
+  become: true
+  become_user: postgres

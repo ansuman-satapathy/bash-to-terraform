@@ -1,0 +1,28 @@
+---
+# ==============================================================================
+# Master Playbook (site.yml)
+# ==============================================================================
+
+- name: Phase 1 - Baseline Configuration
+  hosts: all
+  become: true
+  roles:
+    - common
+
+- name: Phase 2 - Database Tier
+  hosts: db       
+  become: true
+  roles:
+    - postgres
+
+- name: Phase 3 - Cache Tier
+  hosts: cache   
+  become: true
+  roles:
+    - redis
+
+- name: Phase 4 - Web/Application Tier
+  hosts: web     
+  become: true
+  roles:
+    - nodejs_app
