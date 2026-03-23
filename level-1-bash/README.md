@@ -2,7 +2,7 @@
 
 This directory represents the first phase of the Infrastructure as Code (IaC) evolution. The goal is to provision a production-ready web application as fast as possible on a single server.
 
-## 🏗 Architecture & Stack
+## Architecture & Stack
 
 - **Environment:** A single Ubuntu 22.04 LTS Virtual Machine.
 - **Web Server:** Nginx (acting as a reverse proxy).
